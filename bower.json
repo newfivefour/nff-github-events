@@ -1,0 +1,19 @@
+{
+  "name": "nff-github-events",
+  "version": "0.0.1",
+  "authors": [
+    "denevell <denevell@denevell.org>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "iron-ajax": "PolymerElements/iron-ajax#~1.0.9",
+  }
+}
