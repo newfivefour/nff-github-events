@@ -132,13 +132,13 @@
       <template>
 	<nff-ajax-wait ajax-ids='["uajax","ajax"]'>
 	  <nff-ajax-quick id="uajax" url="https://api.github.com/users/{{name}}" resp="{{user}}"></nff-ajax-quick>
-	  <nff-ajax-quick id="ajax" url="https://api.github.com/users/{{name}}/events" resp="{{commits}}" transform="{{commitTransform}}"></nff-ajax-quick>
+	  <nff-ajax-quick id="ajax" url="https://api.github.com/users/{{name}}/events" resp="{{commitsOb}}" transform="{{commitTransform}}"></nff-ajax-quick>
 	  <div class="container">
 	    <div class="header">
 	      <img class="header_image" src="{{user.avatar_url}}" />
 	      <a class="header_title" href="{{user.html_url}}">{{user.login}}</a>
 	    </div>
-	    <template is='dom-repeat' items='{{commits}}'>
+	    <template is='dom-repeat' items='{{commitsOb}}'>
 	      <div class="event">
 		<div class$="{{timeSinceColour(item.sinceTime)}}">{{item.sinceTime}}</div>
 		<span>{{typeString(item.type)}}</span>
