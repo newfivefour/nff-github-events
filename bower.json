@@ -15,5 +15,6 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.2.0",
     "iron-ajax": "PolymerElements/iron-ajax#~1.0.9",
+    "iron-image": "PolymerElements/iron-image#~1.2.1"
   }
 }

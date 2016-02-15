@@ -2,8 +2,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
-    <link href="bower_components/polymer/polymer.html" rel="import">
-    <link href="bower_components/iron-ajax/iron-ajax.html" rel="import">
+    <link href="bower_components/polymer/polymer.html" async rel="import">
+    <link href="bower_components/iron-ajax/iron-ajax.html" async rel="import">
+    <link href="bower_components/iron-image/iron-image.html" async rel="import">
     <style>
       body {
 	font-family: helvetica,arial,sans-serif;
@@ -46,6 +47,7 @@
 	      margin-left: 5px;
       }
       .header_image {
+	      background-color: #F0F0F0;
 	      height: 18px; 
 	      width: 18px;" 
       }
@@ -130,13 +132,13 @@
     </dom-module>
     <dom-module id="nff-github-events">
       <template>
-	<nff-ajax-wait ajax-ids='["uajax","ajax"]'>
+	<nff-ajax-wait ajax-ids='["ajax"]'>
 	  <nff-ajax-quick id="uajax" url="https://api.github.com/users/{{name}}" resp="{{user}}"></nff-ajax-quick>
 	  <nff-ajax-quick id="ajax" url="https://api.github.com/users/{{name}}/events" resp="{{commitsOb}}" transform="{{commitTransform}}"></nff-ajax-quick>
 	  <div class="container">
 	    <div class="header">
-	      <img class="header_image" src="{{user.avatar_url}}" />
-	      <a class="header_title" href="{{user.html_url}}">{{user.login}}</a>
+	      <iron-image class="header_image" sizing="contain" preload="true" fade="true" src="{{user.avatar_url}}"></iron-image>
+	      <a class="header_title" href="https://github.com/{{name}}">{{name}}</a>
 	    </div>
 	    <template is='dom-repeat' items='{{commitsOb}}'>
 	      <div class="event">
