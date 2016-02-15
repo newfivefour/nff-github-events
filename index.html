@@ -1,7 +1,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script wc src="bower_components/webcomponentsjs/webcomponents-lite.min.js" async></script>
     <link href="bower_components/polymer/polymer.html" async rel="import">
     <link href="bower_components/iron-ajax/iron-ajax.html" async rel="import">
     <link href="bower_components/iron-image/iron-image.html" async rel="import">
@@ -61,7 +61,6 @@
 	<style>
 	  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 	  .fade-in {
-	    opacity: 0;
 	    animation: fadeIn ease-In 1;
 	    animation-fill-mode:forwards;
 	    animation-duration:200ms;
@@ -72,6 +71,7 @@
 	</div>
       </template>
       <script>
+      document.querySelector("script[wc]").addEventListener("load", function(e) {
 	HTMLImports.whenReady(function() {
 	  Polymer({
 	    is: "nff-ajax-wait",
@@ -92,6 +92,7 @@
 	    }
 	  });
 	});
+      });
       </script>
     </dom-module>
     <dom-module id="nff-ajax-quick">
@@ -99,6 +100,7 @@
 	  <iron-ajax id="ajax" auto="true" url="[[url]]" content-type="application/json" method="GET" handle-as="json" on-response="handleResponse"></iron-ajax>
       </template>
       <script>
+      document.querySelector("script[wc]").addEventListener("load", function(e) {
         HTMLImports.whenReady(function() {
           Polymer({
             is: "nff-ajax-quick",
@@ -128,6 +130,7 @@
             }
           });
         });
+      });
       </script>
     </dom-module>
     <dom-module id="nff-github-events">
@@ -151,6 +154,7 @@
 	</nff-ajax-wait>
       </template>
       <script>
+      document.querySelector("script[wc]").addEventListener("load", function(e) {
         HTMLImports.whenReady(function() {
           Polymer({
             is: "nff-github-events",
@@ -207,6 +211,7 @@
 	    }
 	  });
 	});
+      });
       </script>
     </dom-module>
   </head>
@@ -215,10 +220,5 @@
       <nff-github-events name="newfivefour" commits="10"></nff-github-events>
     </template>
   </body>
-  <script>
-    window.addEventListener('WebComponentsReady', function(e) { 
-      var t = document.querySelector('#app');
-   });
-</script>
 </html>
 
