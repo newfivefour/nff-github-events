@@ -1,0 +1,213 @@
+    <link href="bower_components/polymer/polymer.html" rel="import">
+    <link href="bower_components/iron-ajax/iron-ajax.html" rel="import">
+    <link href="bower_components/iron-image/iron-image.html" rel="import">
+
+    <dom-module id="nff-ajax-wait">
+      <template>
+				<style>
+					@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+					.fade-in {
+						animation: fadeIn ease-In 1;
+						animation-fill-mode:forwards;
+						animation-duration:200ms;
+					}
+				</style>
+				<div id="container" style="opacity: 0">
+					<content></content>
+				</div>
+      </template>
+      <script>
+     // document.querySelector("script[wc]").addEventListener("load", function(e) {
+			//	HTMLImports.whenReady(function() {
+					Polymer({
+						is: "nff-ajax-wait",
+						properties: {
+							ajaxIds: {
+								type: Array
+							}
+						},
+						ready: function() {
+							this.addEventListener("response", function(e) {
+								this.ajaxIds = this.ajaxIds.filter(function(el) {
+									return el != e.target.id;
+								});
+								if (this.ajaxIds.length == 0) {
+									this.$.container.classList.add("fade-in");
+								}
+							});
+						}
+					});
+		//		});
+      //});
+      </script>
+    </dom-module>
+    <dom-module id="nff-ajax-quick">
+      <template>
+	  <iron-ajax id="ajax" auto="true" url="[[url]]" content-type="application/json" method="GET" handle-as="json" on-response="handleResponse" on-error="handleError"></iron-ajax>
+      </template>
+      <script>
+      //document.querySelector("script[wc]").addEventListener("load", function(e) {
+        //HTMLImports.whenReady(function() {
+          Polymer({
+            is: "nff-ajax-quick",
+            properties: {
+              url: String,
+              resp: {
+                notify: true,
+                type: Object
+              },
+              transform: {
+                type: Object
+              },
+            },
+            handleError: function(e, d) {
+	      			console.log("nff-ajax-quick error: ", e);
+	    			},
+            handleResponse: function(e, d) {
+              console.log("nff-ajax-quick response: ", e.detail.response);
+              if (this.transform != null && this.transform.transform != null) {
+                this.resp = this.transform.transform(e.detail.response);
+              } else {
+                this.resp = e.detail.response;
+              }
+              this.fire("response", e);
+            }
+          });
+        //});
+      //});
+      </script>
+    </dom-module>
+    <dom-module id="nff-github-events">
+      <template>
+				<style>
+					* {
+						font-family: helvetica,arial,sans-serif;
+						font-size: 10px;
+						color: #666;
+						line-height: 15px;
+					}
+					.recent_event {
+						color: #32CD32;
+					}
+					.old_event{
+						color: #CCC;
+					}
+					.repo_name {
+						color: #4183C4;
+						text-decoration: none;
+					}
+					.event {
+						padding-top: 5px;
+						padding-left: 10px;
+						padding-right: 10px;
+						padding-bottom: 5px;
+						border-bottom: 1px solid #EEE;
+						line-height: 17px;
+					}
+					.header {
+						padding-left: 4px;
+						background-color: #F0F0F0;
+						height: 24px;
+						display: flex; 
+						flex-direction: row; 
+						justify-content: 
+						flex-start; 
+						align-items: center;
+					}
+					.header_title {
+						color: #4183C4;
+						text-decoration: none;
+						font-weight: bold;
+						font-size: 12px;
+						margin-left: 5px;
+					}
+					.header_image {
+						background-color: #F0F0F0;
+						height: 18px; 
+						width: 18px;" 
+					}
+					.container {
+						border: 1px solid rgb(221, 221, 221);
+						border-radius: 3px;
+					}
+				</style>
+				<nff-ajax-wait ajax-ids='["ajax"]'>
+					<nff-ajax-quick id="uajax" url="https://api.github.com/users/{{name}}" resp="{{user}}"></nff-ajax-quick>
+					<nff-ajax-quick id="ajax" url="https://api.github.com/users/{{name}}/events" resp="{{commitsOb}}" transform="{{commitTransform}}"></nff-ajax-quick>
+					<div class="container">
+						<div class="header">
+							<iron-image class="header_image" sizing="contain" preload="true" fade="true" src="{{user.avatar_url}}"></iron-image>
+							<a class="header_title" href="https://github.com/{{name}}">{{name}}</a>
+						</div>
+						<template is='dom-repeat' items='{{commitsOb}}'>
+							<div class="event">
+								<div class$="{{timeSinceColour(item.sinceTime)}}">{{item.sinceTime}}</div>
+								<span>{{typeString(item.type)}}</span>
+								<span><a class="repo_name" href="{{item.repo.url}}">{{shortRepoName(item.repo.name)}}</a></span>
+							</div>
+						</template>
+					</div>
+				</nff-ajax-wait>
+      </template>
+      <script>
+      //document.querySelector("script[wc]").addEventListener("load", function(e) {
+        //HTMLImports.whenReady(function() {
+          Polymer({
+            is: "nff-github-events",
+						properties: {
+							commits: {
+								type: Number,
+								value: 5
+	      			},
+	      			name: String,
+	    			},
+						ready: function() {
+							var that = this;
+							this.commitTransform = {
+								transform: function(e) {
+									e = e.slice(0, that.commits);
+									e.forEach(function(e) {
+										e.sinceTime = that.timeSince(e.created_at);
+									});
+									return e;
+								}
+							};
+						},
+						typeString: function(type_string) {
+							switch (type_string) {
+								case 'PushEvent': return 'Pushed to';
+								case 'IssueCommentEvent': return 'Commented on';
+								case 'CreateEvent': return 'Created ';
+								default: return type_string;
+							}
+						},
+						shortRepoName: function(repo_string) {
+							return repo_string.split('/')[1];
+						},
+						timeSinceColour: function(timeSince) {
+							return (timeSince.indexOf('seconds ago') > -1 
+							|| timeSince.indexOf('hours ago') > -1 
+							|| timeSince.indexOf('minutes ago') > -1) 
+							? 'recent_event' : 'old_event';
+						},
+						timeSince: function(date) {
+							var date = new Date(date);
+							var seconds = Math.floor((new Date() - date) / 1000);
+							var interval = Math.floor(seconds / 31536000);
+							if (interval > 1) return interval + " years ago";
+							interval = Math.floor(seconds / 2592000);
+							if (interval > 1) return interval + " months ago";
+							interval = Math.floor(seconds / 86400);
+							if (interval > 1) return interval + " days ago";
+							interval = Math.floor(seconds / 3600);
+							if (interval > 1) return interval + " hours ago";
+							interval = Math.floor(seconds / 60);
+							if (interval > 1) return interval + " minutes ago";
+							return Math.floor(seconds) + " seconds ago";
+						}
+					});
+				//});
+      //});
+      </script>
+    </dom-module>
+
