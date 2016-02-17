@@ -124,7 +124,7 @@ Example:
 					var that = this;
 					this.commitTransform = {
 						transform: function(e) {
-							e = e.slice(0, that.commits);
+							e = e.slice(0, that.num);
 							e.forEach(function(e) {
 								e.sinceTime = that._timeSince(e.created_at);
 							});
