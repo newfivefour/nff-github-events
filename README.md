@@ -1,5 +1,7 @@
 A Web Component using Polymer that shows your github event stream.
 
+<img alt="screenshot of the widget" src="https://www.newfivefour.com/res/ge1.png">
+
 In your web directory run
 
     bower install --save newfivefour/nff-github-events # for the project
