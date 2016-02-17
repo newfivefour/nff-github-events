@@ -17,8 +17,11 @@ since Polymer 1.2.4 uses Shady dom that needs this for performance reasons, else
 
 Example:
 
-    <script async 
-			src="https://polygit.org/components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    bower install -S newfivefour/nff-github-events # for the project
+    bower install -D polymerelements/iron-component-page # for the doc viewer
+
+    <script defer src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link defer rel="import" herf="bower_components/nff-github-events">
     ...
     <nff-github-events
       name="newfivefour"
