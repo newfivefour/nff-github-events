@@ -105,71 +105,71 @@ Example:
 		</nff-ajax-wait>
 	</template>
 	<script>
-			Polymer({
-				is: "nff-github-events",
-				properties: {
-					/**
-					* If you ask for 500 results and github's api only returns 4, you're only getting 4.
-					*/
-					num: {
-						type: Number,
-						value: 5
-					},
-					/**
-					* Your github username. Or leave this blank, if you're desparately hankering to see my updates.
-					*/
-					name: { 
-						type: String,
-						value: "newfivefour"
-					}
+		Polymer({
+			is: "nff-github-events",
+			properties: {
+				/**
+				* If you ask for 500 results and github's api only returns 4, you're only getting 4.
+				*/
+				num: {
+					type: Number,
+					value: 5
 				},
-				ready: function() {
-					var that = this;
-					this.commitTransform = {
-						transform: function(e) {
-							e = e.slice(0, that.num);
-							e.forEach(function(e) {
-								e.sinceTime = that._timeSince(e.created_at);
-							});
-							return e;
-						}
-					};
-				},
-				_typeString: function(type_string) {
-					switch (type_string) {
-						case 'PushEvent': return 'Pushed to';
-						case 'IssueCommentEvent': return 'Commented on';
-						case 'IssueCommentEvent': return 'Commented on';
-						case 'IssuesEvent': return 'Created issue for';
-						case 'CreateEvent': return 'Created';
-						default: return type_string;
-					}
-				},
-				_shortRepoName: function(repo_string) {
-					return repo_string.split('/')[1];
-				},
-				_timeSinceColour: function(timeSince) {
-					return (timeSince.indexOf('seconds ago') > -1 
-					|| timeSince.indexOf('hours ago') > -1 
-					|| timeSince.indexOf('minutes ago') > -1) 
-					? 'recent_event' : 'old_event';
-				},
-				_timeSince: function(date) {
-					var date = new Date(date);
-					var seconds = Math.floor((new Date() - date) / 1000);
-					var interval = Math.floor(seconds / 31536000);
-					if (interval > 1) return interval + " years ago";
-					interval = Math.floor(seconds / 2592000);
-					if (interval > 1) return interval + " months ago";
-					interval = Math.floor(seconds / 86400);
-					if (interval > 1) return interval + " days ago";
-					interval = Math.floor(seconds / 3600);
-					if (interval > 1) return interval + " hours ago";
-					interval = Math.floor(seconds / 60);
-					if (interval > 1) return interval + " minutes ago";
-					return Math.floor(seconds) + " seconds ago";
+				/**
+				* Your github username. Or leave this blank, if you're desparately hankering to see my updates.
+				*/
+				name: { 
+					type: String,
+					value: "newfivefour"
 				}
-			});
+			},
+			ready: function() {
+				var that = this;
+				this.commitTransform = {
+					transform: function(e) {
+						e = e.slice(0, that.num);
+						e.forEach(function(e) {
+							e.sinceTime = that._timeSince(e.created_at);
+						});
+						return e;
+					}
+				};
+			},
+			// TODO: expand
+			_typeString: function(type_string) {
+				switch (type_string) {
+					case 'PushEvent': return 'Pushed to';
+					case 'IssueCommentEvent': return 'Commented on';
+					case 'IssuesEvent': return 'Created issue for';
+					case 'CreateEvent': return 'Created';
+					default: return type_string;
+				}
+			},
+			_shortRepoName: function(repo_string) {
+				return repo_string.split('/')[1];
+			},
+			_timeSinceColour: function(timeSince) {
+				return (timeSince.indexOf('seconds ago') > -1 
+				|| timeSince.indexOf('hours ago') > -1 
+				|| timeSince.indexOf('minutes ago') > -1) 
+				? 'recent_event' : 'old_event';
+			},
+			_timeSince: function(date) {
+				var date = new Date(date);
+				var seconds = Math.floor((new Date() - date) / 1000);
+				var interval = Math.floor(seconds / 31536000);
+				if (interval > 1) return interval + " years ago";
+				interval = Math.floor(seconds / 2592000);
+				if (interval > 1) return interval + " months ago";
+				interval = Math.floor(seconds / 86400);
+				if (interval > 1) return interval + " days ago";
+				interval = Math.floor(seconds / 3600);
+				if (interval > 1) return interval + " hours ago";
+				interval = Math.floor(seconds / 60);
+				if (interval > 1) return interval + " minutes ago";
+				return Math.floor(seconds) + " seconds ago";
+			}
+		});
 	</script>
 </dom-module>
 <!--
@@ -199,28 +199,28 @@ Internal component. May be seperate in time.
 		</div>
 	</template>
 	<script>
-			Polymer({
-				is: "nff-ajax-wait",
-				properties: {
-					/**
-					 * The ids of the `response` events that bubble up in JSON array format.
-					 * Once all these are found, we fade the div in from opacity: 0 to 1.
-					 */
-					ajaxIds: {
-						type: Array
-					}
-				},
-				ready: function() {
-					this.addEventListener("response", function(e) {
-						this.ajaxIds = this.ajaxIds.filter(function(el) {
-							return el != e.target.id;
-						});
-						if (this.ajaxIds.length == 0) {
-							this.$.xcontainer.classList.add("fade-in");
-						}
-					});
+		Polymer({
+			is: "nff-ajax-wait",
+			properties: {
+				/**
+				 * The ids of the `response` events that bubble up in JSON array format.
+				 * Once all these are found, we fade the div in from opacity: 0 to 1.
+				 */
+				ajaxIds: {
+					type: Array
 				}
-			});
+			},
+			ready: function() {
+				this.addEventListener("response", function(e) {
+					this.ajaxIds = this.ajaxIds.filter(function(el) {
+						return el != e.target.id;
+					});
+					if (this.ajaxIds.length == 0) {
+						this.$.xcontainer.classList.add("fade-in");
+					}
+				});
+			}
+		});
 	</script>
 </dom-module>
 <!--
@@ -233,40 +233,41 @@ Internal component. May be seperate in time.
 -->
 <dom-module id="nff-ajax-quick">
 	<template>
-<iron-ajax id="ajax" auto="true" url="[[url]]" content-type="application/json" method="GET" handle-as="json" on-response="_handleResponse" on-error="_handleError"></iron-ajax>
+    <iron-ajax id="ajax" auto="true" url="[[url]]" content-type="application/json" method="GET" handle-as="json" on-response="_handleResponse" on-error="_handleError"></iron-ajax>
 	</template>
 	<script>
-			Polymer({
-				is: "nff-ajax-quick",
-				properties: {
-					url: String,
-					/**
-				   * The reponse object, to be data bound.
-					*/
-					resp: {
-						notify: true,
-						type: Object
-					},
-					/** 
-					 * An object with the strcture `{ transform: function(response) {} }`.
-					 * If this exists, the reponse it passed to the above function after it's data bound.
-					 */
-					transform: {
-						type: Object
-					},
+		Polymer({
+			is: "nff-ajax-quick",
+			properties: {
+				url: String,
+				/**
+			   * The reponse object, to be data bound.
+				*/
+				resp: {
+					notify: true,
+					type: Object
 				},
-				_handleError: function(e, d) {
-					console.log("nff-ajax-quick error: ", e);
+				/** 
+				 * An object with the strcture `{ transform: function(response) {} }`.
+				 * If this exists, the reponse it passed to the above function after it's data bound.
+				 */
+				transform: {
+					type: Object
 				},
-				_handleResponse: function(e, d) {
-					console.log("nff-ajax-quick response: ", e.detail.response);
-					if (this.transform != null && this.transform.transform != null) {
-						this.resp = this.transform.transform(e.detail.response);
-					} else {
-						this.resp = e.detail.response;
-					}
-					this.fire("response", e);
+			},
+			// TODO: Should probably turn the logging off
+			_handleError: function(e, d) {
+				console.log("nff-ajax-quick error: ", e);
+			},
+			_handleResponse: function(e, d) {
+				console.log("nff-ajax-quick response: ", e.detail.response);
+				if (this.transform != null && this.transform.transform != null) {
+					this.resp = this.transform.transform(e.detail.response);
+				} else {
+					this.resp = e.detail.response;
 				}
-			});
+				this.fire("response", e);
+			}
+		});
 	</script>
 </dom-module>
