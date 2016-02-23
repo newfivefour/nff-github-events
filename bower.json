@@ -4,6 +4,12 @@
   "authors": [
     "denevell <denevell@denevell.org>"
   ],
+  homepage: 'https://github.com/newfivefour/nff-github-events',  
+  keywords: [
+    'Polymer',
+    'web-components'
+  ],  
+  description: 'Shows your github events and avatar',  
   "license": "MIT",
   "ignore": [
     "**/.*",
