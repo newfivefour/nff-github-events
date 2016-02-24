@@ -7,7 +7,7 @@
   "homepage": "https://github.com/newfivefour/nff-github-events",  
   "keywords": [
     "Polymer",
-    "web-components"
+    "web-component"
   ],  
   "description": "Shows your github events and avatar",  
   "license": "MIT",
