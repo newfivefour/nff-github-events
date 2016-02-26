@@ -98,7 +98,7 @@ Example:
 					<div class="event">
 						<div class$="{{_timeSinceColour(item.sinceTime)}}">{{item.sinceTime}}</div>
 						<span>{{_typeString(item.type)}}</span>
-						<span><a class="repo_name" href="{{item.repo.url}}">{{_shortRepoName(item.repo.name)}}</a></span>
+						<span><a class="repo_name" href="https://github.com/{{item.repo.name}}">{{_shortRepoName(item.repo.name)}}</a></span>
 					</div>
 				</template>
 			</div>
@@ -141,6 +141,7 @@ Example:
 					case 'PushEvent': return 'Pushed to';
 					case 'IssueCommentEvent': return 'Commented on';
 					case 'IssuesEvent': return 'Created issue for';
+					case 'WatchEvent': return 'Watching';
 					case 'CreateEvent': return 'Created';
 					default: return type_string;
 				}
